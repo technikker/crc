@@ -80,7 +80,7 @@ crc_32 = {k: gen_calculator(k, v, 32) for k, v in crc_32_args.items()}
 
 def test_calculator(calculator, check_a, check_b):
 	value = calculator(TEST_STR)
-	print("testing", repr(calculator))
+	# print("testing", repr(calculator))
 	if value != check_a or value != check_b:
 		print("! error:", value, check_a, check_b)
 	else:

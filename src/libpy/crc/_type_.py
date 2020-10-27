@@ -1,5 +1,21 @@
-from ._data_ import Params, Table
-from ._oper_ import gen_table, crc
+from dataclasses import dataclass
+from ._calc_ import gen_table, crc
+
+
+@dataclass
+class Params:
+	hash_size: int
+	poly: int
+	init: int
+	xor_out: int
+	ref_in: bool
+	ref_out: bool
+
+
+@dataclass
+class Table:
+	params: Params
+	values: tuple
 
 
 class Crc:
