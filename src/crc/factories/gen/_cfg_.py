@@ -1,7 +1,7 @@
-from ..._data_ import Params
+from ..._t_ import Params
 
 
-crc_params = {  # algorithm name: Params(hash_size, poly, xorin, xorout, refin, refout)
+params = {  # algorithm name: Params(hash_size, poly, xorin, xorout, refin, refout)
 	"crc_8": Params(8, 0x07, 0x00, 0x00, False, False),
 	"crc_8_cdma2000": Params(8, 0x9b, 0xff, 0x00, False, False),
 	"crc_8_darc": Params(8, 0x39, 0x00, 0x00, True, True),

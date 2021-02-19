@@ -1,5 +1,5 @@
-from crc import CrcFactory
-from crc import Crc
+from src.crc import factories
+from src.crc import table, calculator
 
 
 TEST_STR = "123456789"
@@ -70,7 +70,7 @@ def padded_hex(value, hex_len=2):
 
 
 def gen_calculator(key, value, hash_size):
-	return Crc.from_args(key, hash_size, *value[0])
+	return calculator(table(hash_size, *value[0]))
 
 
 crc_8 = {k: gen_calculator(k, v, 8) for k, v in crc_8_args.items()}
@@ -78,8 +78,8 @@ crc_16 = {k: gen_calculator(k, v, 16) for k, v in crc_16_args.items()}
 crc_32 = {k: gen_calculator(k, v, 32) for k, v in crc_32_args.items()}
 
 
-def test_calculator(calculator, check_a, check_b):
-	value = calculator(TEST_STR)
+def test_calculator(calculate_f, check_a, check_b):
+	value = calculate_f(TEST_STR)
 	# print("testing", repr(calculator))
 	if value != check_a or value != check_b:
 		print("! error:", value, check_a, check_b)
@@ -101,5 +101,5 @@ if __name__ == "__main__":
 	test_calculators(crc_16, crc_16_args)
 	test_calculators(crc_32, crc_32_args)
 	print("end test - if no errors printed since 'start test', test was successful\n")
-	print(CrcFactory.crc_32c())
-	print(padded_hex(CrcFactory.crc_32c()(TEST_STR), 8))
+	print(factories.crc_32c())
+	print(padded_hex(factories.crc_32c()(TEST_STR), 8))
