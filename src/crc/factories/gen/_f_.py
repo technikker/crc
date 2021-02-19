@@ -1,13 +1,15 @@
+from functools import wraps
 from os.path import join as path_join
 from ..._f_ import table, calculator
 from ._cfg_ import params
 
 
-def factory(f):
-	def wrapper_f():
-		name = f.__name__
+def factory(_f):
+	@wraps(_f)
+	def gen_calculator():
+		name = _f.__name__
 		return calculator(table(*params[name]))
-	return wrapper_f
+	return gen_calculator
 
 
 def get_caller_name(level):

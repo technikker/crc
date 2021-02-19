@@ -11,7 +11,7 @@ def logical_reverse(source: int, length: int):
 
 def table_value(index, hash_size, poly, ref_in):
 	hash_size, poly, ref_in = hash_size, poly, ref_in
-	_mask = ~(-1 << hash_size)
+	mask = ~(-1 << hash_size)
 	r = index
 	if ref_in:
 		r = logical_reverse(r, hash_size)
@@ -25,7 +25,7 @@ def table_value(index, hash_size, poly, ref_in):
 			r <<= 1
 	if ref_in:
 		r = logical_reverse(r, hash_size)
-	return r & _mask
+	return r & mask
 
 
 TABLE_SIZE = 256
@@ -41,22 +41,22 @@ def calculator(_table: Table):
 		if isinstance(source, str):
 			source = (ord(c) for c in source)
 
-		_table_params = _table.params
-		_table_values = _table.values
-		hash_size, init, xor_out, ref_out = _table_params.hash_size, _table_params.init, _table_params.xor_out, \
-											_table_params.ref_out
-		_mask = ~(-1 << hash_size)
+		table_params = _table.params
+		table_values = _table.values
+		hash_size, init, xor_out, ref_out = table_params.hash_size, table_params.init, table_params.xor_out, \
+											table_params.ref_out
+		mask = ~(-1 << hash_size)
 
 		r = logical_reverse(init, hash_size) if ref_out else init
 		if ref_out:
 			for value in source:
-				r = _table_values[(r ^ value) & 0xff] ^ (r >> 8)
-				r &= _mask
+				r = table_values[(r ^ value) & 0xff] ^ (r >> 8)
+				r &= mask
 		else:
 			to_right = hash_size - 8
 			to_right = 0 if to_right < 0 else to_right
 			for value in source:
-				r = _table_values[((r >> to_right) ^ value) & 0xff] ^ (r << 8)
-				r &= _mask
-		return (r ^ xor_out) & _mask
+				r = table_values[((r >> to_right) ^ value) & 0xff] ^ (r << 8)
+				r &= mask
+		return (r ^ xor_out) & mask
 	return calculate
